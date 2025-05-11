@@ -1,42 +1,33 @@
 package com.example.api_sem4.dto;
 
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public class ProgramDTO {
 
     private Long id;
     private String programName;
     private String programDescription;
-    private Integer teacherId;
-    private Integer maxStudents;
-    private Integer totalHours;
     private Integer totalSessions;
     private BigDecimal tuition;
-    private LocalDateTime createdAt;
+
+    // Trường ảnh dưới dạng base64
+    private String imageBase64;
 
     // Constructors
     public ProgramDTO() {
     }
 
-    public ProgramDTO(Long id, String programName, String programDescription, Integer teacherId,
-                       Integer maxStudents, Integer totalHours, Integer totalSessions,
-                       BigDecimal tuition, LocalDateTime createdAt) {
+    public ProgramDTO(Long id, String programName, String programDescription, Integer totalSessions,
+                      BigDecimal tuition, String imageBase64) {
         this.id = id;
         this.programName = programName;
         this.programDescription = programDescription;
-        this.teacherId = teacherId;
-        this.maxStudents = maxStudents;
-        this.totalHours = totalHours;
         this.totalSessions = totalSessions;
         this.tuition = tuition;
-        this.createdAt = createdAt;
+        this.imageBase64 = imageBase64;
     }
 
     // Getters and Setters
-
-
     public Long getId() {
         return id;
     }
@@ -61,30 +52,6 @@ public class ProgramDTO {
         this.programDescription = programDescription;
     }
 
-    public Integer getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(Integer teacherId) {
-        this.teacherId = teacherId;
-    }
-
-    public Integer getMaxStudents() {
-        return maxStudents;
-    }
-
-    public void setMaxStudents(Integer maxStudents) {
-        this.maxStudents = maxStudents;
-    }
-
-    public Integer getTotalHours() {
-        return totalHours;
-    }
-
-    public void setTotalHours(Integer totalHours) {
-        this.totalHours = totalHours;
-    }
-
     public Integer getTotalSessions() {
         return totalSessions;
     }
@@ -101,11 +68,11 @@ public class ProgramDTO {
         this.tuition = tuition;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getImageBase64() {
+        return imageBase64;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
     }
 }

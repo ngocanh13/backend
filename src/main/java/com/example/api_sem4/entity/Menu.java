@@ -15,8 +15,8 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "day_of_week", unique = true) // Tên cột trong DB là 'day_of_week'
-    private String dayOfWeek; // Thay đổi thành 'dayOfWeek' để phù hợp với camelCase
+    @Column(name = "day_of_week", unique = true)
+    private String dayOfWeek;
 
     private Date start_date;
     private Date end_date;

@@ -33,6 +33,7 @@ public class Attendance {
     @Column(name = "time", nullable = false)
     private Time time;
 
+
     public Long getId() {
         return id;
     }

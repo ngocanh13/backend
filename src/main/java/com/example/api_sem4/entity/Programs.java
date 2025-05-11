@@ -1,9 +1,10 @@
 package com.example.api_sem4.entity;
 
-
+import com.example.api_sem4.utils.ImageUtils;
 import jakarta.persistence.*;
+
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "programs")
@@ -11,7 +12,6 @@ public class Programs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "program_name", nullable = false, length = 255)
@@ -20,28 +20,22 @@ public class Programs {
     @Column(name = "program_description", columnDefinition = "TEXT")
     private String programDescription;
 
-    @Column(name = "teacher_id")
-    private Integer teacherId;
-
-    @Column(name = "max_students")
-    private Integer maxStudents;
-
-    @Column(name = "total_hours")
-    private Integer totalHours;
-
     @Column(name = "total_sessions")
     private Integer totalSessions;
 
     @Column(name = "tuition", precision = 18, scale = 2)
     private BigDecimal tuition;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    // Lưu ảnh dưới dạng byte[] nén
+    @Lob
+    @Column(name = "image", columnDefinition = "LONGBLOB")
+    private byte[] image;
 
     // Constructors
     public Programs() {
     }
 
+    // Getter/setter cơ bản
     public Long getId() {
         return id;
     }
@@ -66,30 +60,6 @@ public class Programs {
         this.programDescription = programDescription;
     }
 
-    public Integer getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(Integer teacherId) {
-        this.teacherId = teacherId;
-    }
-
-    public Integer getMaxStudents() {
-        return maxStudents;
-    }
-
-    public void setMaxStudents(Integer maxStudents) {
-        this.maxStudents = maxStudents;
-    }
-
-    public Integer getTotalHours() {
-        return totalHours;
-    }
-
-    public void setTotalHours(Integer totalHours) {
-        this.totalHours = totalHours;
-    }
-
     public Integer getTotalSessions() {
         return totalSessions;
     }
@@ -106,11 +76,21 @@ public class Programs {
         this.tuition = tuition;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    // Nén khi set ảnh
+    public void setImage(byte[] image) {
+        try {
+            this.image = ImageUtils.compressImage(image); // Nén ảnh khi lưu
+        } catch (IOException e) {
+            throw new RuntimeException("Error compressing image", e);
+        }
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    // Giải nén khi get ảnh
+    public byte[] getImage() {
+        try {
+            return ImageUtils.decompressImage(this.image); // Giải nén ảnh khi lấy
+        } catch (IOException e) {
+            throw new RuntimeException("Error decompressing image", e);
+        }
     }
 }

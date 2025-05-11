@@ -5,13 +5,22 @@ import com.example.api_sem4.entity.AttendanceEnum;
 import java.sql.Time;
 import java.time.LocalDate;
 
-
 public class AttendanceDTO {
     private Long id;
-    private Long student;
-    private AttendanceEnum status;  // Enum cho trạng thái
+    private StudentDTO student; // thay vì Long studentId
+    private AttendanceEnum status;
     private LocalDate date;
     private Time time;
+
+    public AttendanceDTO() {}
+
+    public AttendanceDTO(Long id, StudentDTO student, AttendanceEnum status, LocalDate date, Time time) {
+        this.id = id;
+        this.student = student;
+        this.status = status;
+        this.date = date;
+        this.time = time;
+    }
 
     public Long getId() {
         return id;
@@ -21,11 +30,11 @@ public class AttendanceDTO {
         this.id = id;
     }
 
-    public Long getStudent() {
+    public StudentDTO getStudent() {
         return student;
     }
 
-    public void setStudent(Long student) {
+    public void setStudent(StudentDTO student) {
         this.student = student;
     }
 
