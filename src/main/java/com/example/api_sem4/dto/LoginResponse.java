@@ -1,7 +1,12 @@
 package com.example.api_sem4.dto;
 
+import java.util.List;
+
 public class LoginResponse {
     private String token;
+
+
+
 
     public String getToken() {
         return token;
@@ -10,4 +15,7 @@ public class LoginResponse {
     public void setToken(String token) {
         this.token = token;
     }
+
+
+
 }
