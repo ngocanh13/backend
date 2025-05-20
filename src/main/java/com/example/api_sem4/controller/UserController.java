@@ -25,6 +25,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<?> getAllUsers() {
         try {
+            //sasass
             List<User> users = userService.getAllUsers();
             return ResponseEntity.ok(users);
         } catch (Exception e) {
