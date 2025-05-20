@@ -27,7 +27,6 @@ public class User implements UserDetails {
 
     @Column(name = "phone")
     private String phone;
-    private String role;
 
     @ManyToMany(targetEntity = Permission.class, fetch = FetchType.EAGER)
     @JoinTable(name = "user_permission",
@@ -111,13 +110,7 @@ public class User implements UserDetails {
         this.phone = phone;
     }
 
-    public String getRole() {
-        return role;
-    }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public List<Permission> getPermissions() {
         return permissions;

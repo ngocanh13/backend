@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -86,12 +88,28 @@ public class UserService {
                         input.getEmail(), input.getPassword()
                 )
         );
+
         User user = userRepository.findByEmail(input.getEmail());
-        if(user == null) throw new UsernameNotFoundException("Email or password is not found");
+        if(user == null) {
+            throw new UsernameNotFoundException("Email or password is not correct");
+        }
+
+        // Kiểm tra nếu người dùng không có quyền "admin"
+        boolean isAdmin = user.getPermissions().stream()
+                .anyMatch(permission -> "ROLE_ADMIN".equals(permission.getPermission()));
+
+        if (!isAdmin) {
+            throw new SecurityException("Only admins are allowed to login");
+        }
+
         return user;
     }
 
     public boolean userExists(String email) {
         return userRepository.findByEmail(email) != null;
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

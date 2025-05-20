@@ -9,6 +9,9 @@ import com.example.api_sem4.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -19,9 +22,18 @@ public class UserController {
         this.userService = userService;
         this.jwtService = jwtService;
     }
-
+    @GetMapping()
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            //sasass
+            List<User> users = userService.getAllUsers();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching users: " + e.getMessage());
+        }
+    }
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterUser req){
+    public ResponseEntity<?> register(@RequestBody RegisterUser req) {
         try {
             System.out.println("Register request: " + req);  // Log thông tin yêu cầu
             if (userService.userExists(req.getEmail())) {
@@ -36,14 +48,25 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginUser req){
+    public ResponseEntity<?> login(@RequestBody LoginUser req) {
         try {
             User user = userService.authenticate(req);
+
+            List<String> roles = user.getPermissions().stream()
+                    .map(p -> p.getPermission())
+                    .collect(Collectors.toList());
+
+            if (roles.isEmpty()) {
+                return ResponseEntity.status(403).body("No permissions assigned to this user.");
+            }
+
             String jwtToken = jwtService.generateToken(user);
+
             LoginResponse rs = new LoginResponse();
             rs.setToken(jwtToken);
 
-            return ResponseEntity.ok(rs); // Trả về HTTP 200 - OK
+
+            return ResponseEntity.ok(rs);
         } catch (Exception e) {
             return ResponseEntity.status(401).body("Invalid credentials: " + e.getMessage());
         }
